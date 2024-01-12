@@ -1,12 +1,9 @@
 import express from 'express'
-import { UserType } from "../models/user";
+const authController = require('../controller/authController')
 
 const router = express.Router();
 
-router.post('/login', (req:{body: UserType}, res) => {
-    const data = req.body
-    
-    res.send({isAuth: true})
-})
+router.post('/login',authController.loginUser)
+router.post('/register',authController.registerUser)
 
 export default router

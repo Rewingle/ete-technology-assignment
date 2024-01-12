@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Checkbox, Form, Input,Card, message } from 'antd';
+import { Button, Checkbox, Form, Input, Card, message } from 'antd';
 
 type Props = {}
 
@@ -11,7 +11,19 @@ type FieldType = {
 };
 
 const onFinish = (values: any) => {
-    console.log('Success:', values);
+    const fetchRegister = async () => {
+        let res = await fetch('http://localhost:5000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+        let data = res.json();
+        return data;
+    }
+    fetchRegister()
+        .then((res) => { alert(res.message) }).catch(err => console.log(err))
 };
 
 const onFinishFailed = (errorInfo: any) => {
@@ -19,8 +31,8 @@ const onFinishFailed = (errorInfo: any) => {
 };
 
 const RegisterForm = (props: Props) => {
-  return (
-    <Card title='REGISTER' bordered={false}>
+    return (
+        <Card title='REGISTER' bordered={false}>
             <Form action='' method='post'
                 name="login"
                 labelCol={{ span: 8 }}
@@ -33,7 +45,7 @@ const RegisterForm = (props: Props) => {
                 <Form.Item<FieldType>
                     label="Username"
                     name="username"
-                    rules={[{ message: 'Please input your username!' },{min:4, message: 'Username must be minimum 4 characters'}]}
+                    rules={[{ message: 'Please input your username!' }, { min: 4, message: 'Username must be minimum 4 characters' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -48,11 +60,11 @@ const RegisterForm = (props: Props) => {
                 <Form.Item<FieldType>
                     label="Password"
                     name="password"
-                    rules={[{ message: 'Please input your password!' },{min:6, message: 'Password must be minimum 6 characters'}]}
+                    rules={[{ message: 'Please input your password!' }, { min: 6, message: 'Password must be minimum 6 characters' }]}
                 >
                     <Input.Password />
                 </Form.Item>
-                <br/>
+                <br />
                 <Form.Item wrapperCol={{ span: 64 }}>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
                         REGISTER
@@ -60,7 +72,7 @@ const RegisterForm = (props: Props) => {
                 </Form.Item>
             </Form>
         </Card>
-  )
+    )
 }
 
 export default RegisterForm
