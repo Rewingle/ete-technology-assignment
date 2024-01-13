@@ -12,7 +12,7 @@ const Header = (props: Props) => {
   const { token }: any = useAuth();
   const [username, setUsername] = useState(null)
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (!token) {
       return
     }
@@ -37,7 +37,7 @@ const Header = (props: Props) => {
 
 
   }, [token])
-
+ */
   const handleLogout = () => {
     setToken();
     window.location.pathname = '/'
@@ -60,10 +60,7 @@ const Header = (props: Props) => {
       label: <div onClick={handleLogout}>Logout</div>,
       key: 'logout',
     },
-    {
-      label: <div>{username?<div>{username}</div>:null}</div>,
-      key: 'username',
-    }
+    
   ]
   const onClick: MenuProps['onClick'] = e => {
     setCurrentMenu(e.key)
