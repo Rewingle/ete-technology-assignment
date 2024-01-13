@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Row, Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import { useAuth } from "../utils/authProvider";
-import jwt from 'jsonwebtoken'
+
 
 type Props = {}
 
@@ -10,13 +10,33 @@ const Header = (props: Props) => {
   const [currentMenu, setCurrentMenu] = useState<any>();
   const { setToken }: any = useAuth();
   const { token }: any = useAuth();
-  const [username,setUsername] = useState(null)
+  const [username, setUsername] = useState(null)
+
   useEffect(() => {
-    const SECRET: any = process.env.JWT_SECRET
-    const user = jwt.verify(token, SECRET)
-    alert(user)
+    if (!token) {
+      return
+    }
+    console.log(typeof(token))
+    const getUsername = async () => {
+      await fetch('http://localhost:5000/api/getUserInfo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({token: token})
+      }).then((res) => {
+        res.json().then(resp => {
+          setUsername(resp.username)
+        })
+      }
+      ).catch(err => console.log(err))
+
+    }
+
+    getUsername();
+
+
   }, [token])
-  //const navigate = useNavigate();
 
   const handleLogout = () => {
     setToken();
@@ -40,6 +60,10 @@ const Header = (props: Props) => {
       label: <div onClick={handleLogout}>Logout</div>,
       key: 'logout',
     },
+    {
+      label: <div>{username?<div>{username}</div>:null}</div>,
+      key: 'username',
+    }
   ]
   const onClick: MenuProps['onClick'] = e => {
     setCurrentMenu(e.key)
@@ -63,6 +87,7 @@ const Header = (props: Props) => {
             items={menuItems}
 
           />
+          <div>{username ? username : null}</div>
         </Col> : null}
       </Row>
 

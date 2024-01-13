@@ -3,14 +3,15 @@ import cors from 'cors'
 
 import authRoutes from './routes/authRoutes'
 import userRoutes from './routes/userRoutes'
- 
+//import cookies from 'cookie-parser'
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cors())
+//app.use(cookies())
 
-
-app.use('/api',authRoutes,userRoutes)
+app.use('/api', authRoutes, userRoutes)
 
 app.listen(5000)

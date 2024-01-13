@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Reports from '../Components/Reports';
+import Reports from '../Pages/Reports';
 
 import Login from '../Pages/Login';
 

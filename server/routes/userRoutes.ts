@@ -3,6 +3,6 @@ import userController from '../controller/userController'
 
 const router = express.Router();
 
-router.post('getUserInfo',userController.getUserInfo)
+router.post('/getUserInfo', userController)
 
 export default router
