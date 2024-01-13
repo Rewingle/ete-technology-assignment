@@ -1,35 +1,37 @@
 import bcrypt from 'bcrypt'
-import mongoose, { mongo } from 'mongoose'
+import mongoose from 'mongoose'
 import { UserType } from '../models/user'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/user'
 
 require('dotenv').config()
 
-exports.loginUser = async (req: { body: UserType }, res) => {
+exports.loginUser = async(req: { body: UserType }, res) => {
 
     const { username, password } = req.body
 
-    mongoose.connect(process.env.MONGODB_URI_USERS);
+    await mongoose.connect(process.env.MONGODB_URI_USERS).then(async () => {
 
-    /* Find user with given username */
-    const user = await User.findOne({ username })
+        /* Find user with given username */
+        const user = await User.findOne({ username })
 
-    /* Return error if username not exist in db */
-    if (!user) return res.status(404).send({ message: "Invalid username or password." })
+        /* Return error if username not exist in db */
+        if (!user) return res.status(404).send({ message: "Invalid username or password." })
 
-    /* Compare the password with the password from db */
-    const validPassword = await bcrypt.compare(password, user.password);
+        /* Compare the password with the password from db */
+        const validPassword = await bcrypt.compare(password, user.password);
 
-    /* If passwords are not matched for given user return error */
-    if (!validPassword) {
-        return res.status(404).send({ message: "Invalid username or password." })
-    }
-    /* Create the JWT Token */
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET)
+        /* If passwords are not matched for given user return error */
+        if (!validPassword) {
+            return res.status(404).send({ message: "Invalid username or password." })
+        }
+        /* Create the JWT Token */
+        const token = jwt.sign({ userId: user.id, username: user.username, email: user.email }, process.env.JWT_SECRET)
 
-    mongoose.connection.close()
-    res.status(200).send({ token })
+        res.status(200).send({ token })
+        mongoose.connection.close()
+
+    }).catch((err) => { console.log(err); return res.status(500).send({ message: "Internal server error" }) })
 }
 
 exports.registerUser = (req: { body: UserType }, res) => {
