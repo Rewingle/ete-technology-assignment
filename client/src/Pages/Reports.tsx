@@ -120,7 +120,7 @@ const Reports = (props: Props) => {
   }
   useEffect(() => {
     const getReport = async () => {
-      await fetch('http://localhost:5000/api/getReport').then((res) => {
+      await fetch('https://ete-technology-assignment-server.onrender.com/api/getReport').then((res) => {
         if (res.ok) {
 
           res.json().then(data => {

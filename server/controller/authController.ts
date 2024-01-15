@@ -6,7 +6,7 @@ import { User } from '../models/user'
 
 require('dotenv').config()
 
-exports.loginUser = async(req: { body: UserType }, res) => {
+exports.loginUser = async (req: { body: UserType }, res) => {
 
     const { username, password } = req.body
 

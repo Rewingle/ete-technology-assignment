@@ -22,7 +22,7 @@ const RegisterForm = (props: Props) => {
         setLoading(true)
 
         const fetchRegister = async () => {
-            let res = await fetch('http://localhost:5000/api/register', {
+            let res = await fetch('https://ete-technology-assignment-server.onrender.com/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

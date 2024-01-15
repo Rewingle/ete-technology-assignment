@@ -21,7 +21,7 @@ const LoginForm = (props: Props) => {
 
     const onFinish = (values: any) => {
         const fetchLogin = async () => {
-            let res = await fetch('http://localhost:5000/api/login', {
+            let res = await fetch('https://ete-technology-assignment-server.onrender.com/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

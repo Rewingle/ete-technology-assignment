@@ -23,7 +23,7 @@ const Companies = (props: Props) => {
         phone?: String
     }
     const deleteCompany = async (id: string) => {
-        let res = await fetch('http://localhost:5000/api/deleteCompany', {
+        let res = await fetch('https://ete-technology-assignment-server.onrender.com/api/deleteCompany', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ const Companies = (props: Props) => {
     const onFinish = (values: any) => {
 
         const addCompany = async () => {
-            let res = await fetch('http://localhost:5000/api/addCompany', {
+            let res = await fetch('https://ete-technology-assignment-server.onrender.com/api/addCompany', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -126,7 +126,7 @@ const Companies = (props: Props) => {
 
     useEffect(() => {
         const getCompanies = async () => {
-            await fetch('http://localhost:5000/api/companies').then((res) => {
+            await fetch('https://ete-technology-assignment-server.onrender.com/api/companies').then((res) => {
 
                 res.json().then(data => {
                     setCompanies(data)

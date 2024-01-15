@@ -35,7 +35,7 @@ const Companies = (props: Props) => {
     const [products, setProducts] = useState<productType[]>()
 
     const deleteProduct = async (id: string) => {
-        let res = await fetch('http://localhost:5000/api/deleteProduct', {
+        let res = await fetch('https://ete-technology-assignment-server.onrender.com/api/deleteProduct', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ const Companies = (props: Props) => {
     const { Option } = Select;
 
     const getCompanies = async () => {
-        await fetch('http://localhost:5000/api/companies').then((res) => {
+        await fetch('https://ete-technology-assignment-server.onrender.com/api/companies').then((res) => {
 
             res.json().then(data => {
                 setSelectCompanies(data)
@@ -106,7 +106,7 @@ const Companies = (props: Props) => {
         const producedBy = JSON.parse(values.producedBy).companyName
         const producedId = JSON.parse(values.producedBy).companyId
         const addProduct = async () => {
-            let res = await fetch('http://localhost:5000/api/addProduct', {
+            let res = await fetch('https://ete-technology-assignment-server.onrender.com/api/addProduct', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -138,7 +138,7 @@ const Companies = (props: Props) => {
 
     useEffect(() => {
         const getProducts = async () => {
-            await fetch('http://localhost:5000/api/products').then((res) => {
+            await fetch('https://ete-technology-assignment-server.onrender.com/api/products').then((res) => {
 
                 res.json().then(data => {
                     setProducts(data)
