@@ -207,7 +207,7 @@ const Companies = (props: Props) => {
                             </Form.Item>
 
                             <Form.Item
-                                label="Price"
+                                label="Price $"
                                 name="price" rules={[{ required: true }]}
                             >
                                 <InputNumber style={{ width: '100%' }} />
