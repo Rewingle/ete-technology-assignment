@@ -3,6 +3,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Reports from '../Pages/Reports';
 import Companies from '../Pages/Companies';
+import Products from '../Pages/Products'
 
 import Login from '../Pages/Login';
 
@@ -47,7 +48,7 @@ const Routes = (props: Props) => {
             children: [
                 {
                     path: "",
-                    element: <div>PRODUCTS</div>
+                    element: <Products/>
                 }
             ]
         }

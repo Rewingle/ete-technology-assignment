@@ -21,13 +21,14 @@ export async function getCompanies(req, res) {
 export async function addCompany(req, res) {
     await mongoose.connect(process.env.MONGODB_URI).then(async () => {
 
-        const { name, sector, location, founded, numberOfEmployees, revenue, phone } = req.body
+        const { name, companyLegalNumber, incorporationCountry, website, sector, numberOfEmployees, revenue, phone } = req.body
 
         const newCompany = new Company({
             name,
+            companyLegalNumber,
+            incorporationCountry,
+            website,
             sector,
-            location,
-            founded,
             numberOfEmployees,
             revenue,
             phone,
@@ -54,15 +55,15 @@ export async function getReport(req, res) {
             $group: {
                 value: { $sum: 1 },
                 _id: "$sector"
-                
+
             },
 
-        },{
+        }, {
             $project: {
-                "_id":0,
+                "_id": 0,
                 "value": "$value",
-                "label":"$_id"
-                
+                "label": "$_id"
+
             }
         }
         ]

@@ -18,7 +18,7 @@ export const Popup = ({ text, closePopup, children }: any) => {
         left: '30%',
         right: '30%',
         bottom: '20%',
-        top: '30%',
+        top: '20%',
         textAlign: 'center',
         margin: 'auto',
         borderRadius: '15px',

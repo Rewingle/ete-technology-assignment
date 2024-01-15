@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Input} from 'antd';
+import { Button, Form, Input } from 'antd';
 import { Popup } from '../Components/Popup';
 import { PlusCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { InputNumber, Select } from 'antd';
@@ -16,12 +16,13 @@ const Companies = (props: Props) => {
     interface companyType {
         _id: any,
         name: String,
+        companyLegalNumber: Number,
+        incorporationCountry?: String,
+        website: String,
         sector: String,
-        location?: String,
-        founded?: Number,
         numberOfEmployees?: Number,
         revenue: Number,
-        phone?: String,
+        phone?: String
     }
 
 
@@ -32,22 +33,28 @@ const Companies = (props: Props) => {
             title: 'Company Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <a>{text}</a>,
+
+        },
+        {
+            title: 'Legal Number',
+            dataIndex: 'companyLegalNumber',
+            key: 'companyLegalNumber',
+        },
+        {
+            title: 'Incorporation Country',
+            dataIndex: 'incorporationCountry',
+            key: 'incorporationCountry',
+        },
+        {
+            title: 'Website',
+            dataIndex: 'website',
+            key: 'website',
+            render: (text) => <a>{text}</a>
         },
         {
             title: 'Sector',
             dataIndex: 'sector',
             key: 'sector',
-        },
-        {
-            title: 'Location',
-            dataIndex: 'location',
-            key: 'location',
-        },
-        {
-            title: 'Founded',
-            dataIndex: 'founded',
-            key: 'founded',
         },
         {
             title: 'Number of Employees',
@@ -83,7 +90,7 @@ const Companies = (props: Props) => {
         }
     };
     const onFinish = (values: any) => {
-        
+
         const addCompany = async () => {
             let res = await fetch('http://localhost:5000/api/addCompany', {
                 method: 'POST',
@@ -148,6 +155,27 @@ const Companies = (props: Props) => {
                             >
                                 <Input />
                             </Form.Item>
+                            <Form.Item
+                                label="Company Legal Number"
+                                name="companyLegalNumber"
+                                rules={[{ required: true }]}
+                            >
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                            <Form.Item
+                                label="Incorporation Country"
+                                name="incorporationCountry"
+                                rules={[{ message: 'Please input a incorporationCountry' }, { required: true }]}
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                label="Website"
+                                name="website"
+                                rules={[{ message: 'Please input a company website!' }, { required: true }]}
+                            >
+                                <Input />
+                            </Form.Item>
 
                             <Form.Item name="sector" label="Sector" rules={[{ required: true }]}>
                                 <Select
@@ -161,21 +189,6 @@ const Companies = (props: Props) => {
                                     <Option value="Education">Education</Option>
                                     <Option value="Foods">Foods</Option>
                                 </Select>
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Location"
-                                name="location"
-                                rules={[{ message: 'Please input location' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Founded At"
-                                name="founded"
-                            >
-                                <InputNumber style={{ width: '100%' }} />
                             </Form.Item>
                             <Form.Item
                                 label="Number of Employees"
@@ -199,7 +212,7 @@ const Companies = (props: Props) => {
 
                             <Form.Item wrapperCol={{ span: 64 }}>
                                 <Button type="primary" htmlType="submit" style={{ width: '100%', backgroundColor: '#4B49AC' }}>
-                                    ADD
+                                    ADD COMPANY
                                 </Button>
                             </Form.Item>
                         </Form>
@@ -207,7 +220,7 @@ const Companies = (props: Props) => {
                 </Popup> : null}
                 <br />
                 <div >
-                    {companies ? <Table columns={columns} dataSource={companies} /> : <Skeleton active style={{width:'52em'}}/>}
+                    {companies ? <Table columns={columns} dataSource={companies} /> : <Skeleton active style={{ width: '52em' }} />}
 
                 </div>
             </div>

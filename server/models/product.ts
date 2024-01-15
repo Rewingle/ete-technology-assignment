@@ -2,17 +2,16 @@ import { Schema, model, InferSchemaType } from 'mongoose';
 
 const Sectors = ['Clothing', 'Technology', 'Industry', 'Education', 'Foods']
 
-const companySchema = new Schema({
+const productSchema = new Schema({
     name: { type: String, required: true },
+    producedBy: {type: String, required: true},
+    producedId: { type: Schema.Types.ObjectId, ref: 'Companies', required: true },
     sector: { type: String, required: true, enum: Sectors },
-    location: { type: String },
-    founded: { type: Number },
-    numberOfEmployees: { type: Number },
-    revenue: { type: Number, required: true },
-    phone: { type: String },
+    price: {type: Number, required: true},
+    amountUnit: {type: Number, required: true},
     createdAt: Date,
     updatedAt: Date
-}, { collection: 'Companies' })
+}, { collection: 'Products' })
 
-export type CompanyType = InferSchemaType<typeof companySchema>
-export const Company = model('Companies', companySchema)
+export type ProductType = InferSchemaType<typeof productSchema>
+export const Product = model('Products', productSchema)
