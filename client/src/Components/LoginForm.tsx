@@ -35,14 +35,15 @@ const LoginForm = (props: Props) => {
 
         fetchLogin()
             .then((res) => {
+                if (res.ok || res.token) {
 
-                if (res.token) {
+
                     setToken(res.token);
                     navigate("/", { replace: true })
-                } else {
-                    alert('Internal Error')
+
+                }else{
+                    alert(res.message)
                     setLoading(false)
-                    return
                 }
 
             }).catch(err => { console.log(err); setLoading(false) })

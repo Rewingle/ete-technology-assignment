@@ -1,9 +1,10 @@
 import express from 'express'
-const authController = require('../controller/authController')
+const companyController = require('../controller/companyController')
 
 const router = express.Router();
 
-router.post('/login', authController.loginUser)
-router.post('/register', authController.registerUser)
+router.get('/companies', companyController.getCompanies)
+router.post('/addCompany', companyController.addCompany)
+router.get('/getReport',companyController.getReport)
 
 export default router

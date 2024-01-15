@@ -6,7 +6,7 @@ import { User, UserType } from '../models/user'
 require('dotenv').config()
 
 export default async function getUserInfo(req: { body: { token: any } }, res) {
-    await mongoose.connect(process.env.MONGODB_URI_USERS).then(async () => {
+    await mongoose.connect(process.env.MONGODB_URI).then(async () => {
 
         const token = req.body.token
         const _user = jwt.verify(token, process.env.JWT_SECRET)

@@ -10,11 +10,11 @@ exports.loginUser = async(req: { body: UserType }, res) => {
 
     const { username, password } = req.body
 
-    await mongoose.connect(process.env.MONGODB_URI_USERS).then(async () => {
+    await mongoose.connect(process.env.MONGODB_URI).then(async () => {
 
         /* Find user with given username */
         const user = await User.findOne({ username })
-
+        console.log(user)
         /* Return error if username not exist in db */
         if (!user) return res.status(404).send({ message: "Invalid username or password." })
 
@@ -36,7 +36,7 @@ exports.loginUser = async(req: { body: UserType }, res) => {
 
 exports.registerUser = (req: { body: UserType }, res) => {
     const { username, email, password } = req.body
-    mongoose.connect(process.env.MONGODB_URI_USERS).then(async () => {
+    mongoose.connect(process.env.MONGODB_URI).then(async () => {
 
         /* Check if username or email already exist in db */
         const existingUsername = await User.findOne({ username });

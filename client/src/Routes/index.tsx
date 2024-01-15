@@ -2,6 +2,7 @@ import React from 'react'
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Reports from '../Pages/Reports';
+import Companies from '../Pages/Companies';
 
 import Login from '../Pages/Login';
 
@@ -26,7 +27,7 @@ const Routes = (props: Props) => {
             children: [
                 {
                     path: "",
-                    element: <div>REPORTS</div>
+                    element: <Reports/>
                 }
             ]
         },
@@ -36,7 +37,7 @@ const Routes = (props: Props) => {
             children: [
                 {
                     path: "",
-                    element: <div>COMPANIES</div>
+                    element: <Companies/>
                 }
             ]
         },
