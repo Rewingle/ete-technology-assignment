@@ -4,8 +4,8 @@
   "description": "ete technology assignment 2024 JAN",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.ts"
+    "start": "node app.ts",
+    "dev": "nodemon app.ts"
   },
   "author": "Mehmet Ali Kul",
   "license": "ISC",
