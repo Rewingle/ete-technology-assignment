@@ -71,9 +71,9 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <Header />
+
       <RouterProvider router={router} />
-      <FooterComponent />
+
     </AuthProvider>
   </React.StrictMode>
 );
