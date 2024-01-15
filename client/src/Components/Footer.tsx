@@ -16,7 +16,7 @@ const FooterComponent = (props: Props) => {
     };
 
     return (
-        <Footer style={footerStyle}>ETE TECHNOLOGY ASSIGNMENT - MEHMET ALİ KUL</Footer>
+        <Footer style={footerStyle}>ETE TECHNOLOGY ASSIGNMENT - MEHMET ALİ KUL<br />https://github.com/Rewingle/ete-technology-assignment</Footer>
 
     )
 }
