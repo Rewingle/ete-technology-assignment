@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Table, Result, Skeleton, Spin } from 'antd';
 import { Popup } from '../Components/Popup';
-import { PlusCircleOutlined, DownOutlined } from '@ant-design/icons'
-import { InputNumber, Select } from 'antd';
-import { Table, } from 'antd';
-import { Skeleton } from 'antd'
+import { PlusCircleOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons'
 import type { TableProps } from 'antd';
 
 type Props = {}
 
 const Companies = (props: Props) => {
     const [isLoading, setLoading] = useState<boolean>(false)
+    const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
     const [open, setOpen] = useState(false);
 
     interface companyType {
@@ -24,11 +22,35 @@ const Companies = (props: Props) => {
         revenue: Number,
         phone?: String
     }
-
+    const deleteCompany = async (id: string) => {
+        let res = await fetch('http://localhost:5000/api/deleteCompany', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        if (res.ok) {
+            alert('Company deleted successfully')
+            window.location.reload()
+        } else {
+            alert('Error while deleting company')
+        }
+    }
 
     const [companies, setCompanies] = useState<companyType[]>()
 
     const columns: TableProps<companyType>['columns'] = [
+        {
+            title: <DeleteOutlined />,
+            dataIndex: '_id',
+            key: 'delete',
+            render: (_id) => <>{deleteLoading ? <Spin /> : <CloseOutlined style={{ color: 'red', fontSize: '14px', opacity: 0.7 }} onClick={() => {
+                setDeleteLoading(true)
+                deleteCompany(_id);
+            }} />}</>
+
+        },
         {
             title: 'Company Name',
             dataIndex: 'name',
@@ -75,20 +97,7 @@ const Companies = (props: Props) => {
     const { Option } = Select;
 
     const [form] = Form.useForm();
-    const onSectorChange = (value: string) => {
-        switch (value) {
-            case 'male':
-                form.setFieldsValue({ note: 'Hi, man!' });
-                break;
-            case 'female':
-                form.setFieldsValue({ note: 'Hi, lady!' });
-                break;
-            case 'other':
-                form.setFieldsValue({ note: 'Hi there!' });
-                break;
-            default:
-        }
-    };
+
     const onFinish = (values: any) => {
 
         const addCompany = async () => {
@@ -139,7 +148,9 @@ const Companies = (props: Props) => {
                 </Button>
                 {open ? <Popup closePopup={() => setOpen(false)}>
                     <div style={{ padding: '1em' }}>
-                        <Form
+                        {isLoading ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Spin size='large' />
+                        </div> : <Form
                             name="add-company"
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
@@ -180,7 +191,6 @@ const Companies = (props: Props) => {
                             <Form.Item name="sector" label="Sector" rules={[{ required: true }]}>
                                 <Select
                                     placeholder="Select a sector"
-                                    onChange={onSectorChange}
                                     allowClear
                                 >
                                     <Option value="Clothing">Clothing</Option>
@@ -215,7 +225,7 @@ const Companies = (props: Props) => {
                                     ADD COMPANY
                                 </Button>
                             </Form.Item>
-                        </Form>
+                        </Form>}
                     </div>
                 </Popup> : null}
                 <br />

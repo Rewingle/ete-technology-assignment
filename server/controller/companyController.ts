@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import { Company, CompanyType } from '../models/company'
+import { Product, ProductType } from '../models/product'
 
 require('dotenv').config()
 
@@ -44,6 +45,22 @@ export async function addCompany(req, res) {
     }).catch((err) => { console.log(err); res.status(500).send({ message: 'Internal error' }) })
 
 }
+export async function deleteCompany(req, res) {
+    await mongoose.connect(process.env.MONGODB_URI).then(async () => {
+
+        const { id } = req.body
+
+        await Company.deleteOne({ "_id": id }).then((resp) => {
+            console.log(resp);
+            res.status(200).send({ message: 'Company deleted successfully' })
+        }).catch((err) => { console.log(err); res.status(404).send({ message: err }) })
+
+        mongoose.connection.close();
+
+
+    }).catch((err) => { console.log(err); res.status(500).send({ message: 'Internal error' }) })
+
+}
 export async function getReport(req, res) {
     await mongoose.connect(process.env.MONGODB_URI).then(async () => {
         let lastCompany = await Company.find({}).sort({ _id: -1 }).limit(1)
@@ -69,7 +86,20 @@ export async function getReport(req, res) {
         ]
         let pieChartData = await Company.aggregate(aggregatorOpts).exec();
         let highestRevenue = await Company.find().sort({ "revenue": -1 }).limit(1);
-        res.status(200).send({ lastCompany: lastCompany, count: countCompanies, pie: pieChartData, highestRevenue: highestRevenue })
+
+        let highestPricedProduct = await Product.find().sort({ "price": -1 }).limit(1)
+        let lowestPricedProduct = await Product.find().sort({ "price": 1 }).limit(1)
+
+        res.status(200).send({
+            lastCompany: lastCompany,
+            count: countCompanies,
+            pie: pieChartData,
+            highestRevenue: highestRevenue,
+            productPrices: {
+                lowest: lowestPricedProduct[0],
+                highest: highestPricedProduct[0]
+            }
+        })
         mongoose.connection.close()
     }).catch((err) => { console.log(err); res.status(500).send({ message: 'Internal error' }) })
 }

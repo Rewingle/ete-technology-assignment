@@ -1,6 +1,4 @@
 import {useState} from 'react'
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/authProvider";
 import { Button, Card, Layout, Flex, Divider } from 'antd';
 import LoginForm from '../Components/LoginForm';
 import RegisterForm from '../Components/RegisterForm';
