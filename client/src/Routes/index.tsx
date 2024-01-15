@@ -4,7 +4,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Reports from '../Pages/Reports';
 import Companies from '../Pages/Companies';
 import Products from '../Pages/Products'
-
+import Header from '../Components/Header';
+import FooterComponent from '../Components/Footer';
 import Login from '../Pages/Login';
 
 type Props = {}

@@ -24,11 +24,11 @@ const layoutStyle: React.CSSProperties = {
 function App() {
 
   return (
-    <Layout style={layoutStyle}>
+    <>
       <Header />
       <Routes />
-      <FooterComponent/>
-    </Layout>
+      <FooterComponent />
+    </>
   );
 }
 
