@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Table, Spin, Skeleton } from 'antd';
 import { Popup } from '../Components/Popup';
-import { PlusCircleOutlined, DownOutlined } from '@ant-design/icons'
-import { InputNumber, Select } from 'antd';
-import { Table, } from 'antd';
-import { Skeleton } from 'antd'
+import { PlusCircleOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons'
 import type { TableProps } from 'antd';
 
 type Props = {}
@@ -12,6 +9,7 @@ type Props = {}
 const Companies = (props: Props) => {
     const [isLoading, setLoading] = useState<boolean>(false)
     const [selectCompanies, setSelectCompanies] = useState<companyType[]>()
+    const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
     const [open, setOpen] = useState(false);
 
     interface productType {
@@ -36,7 +34,32 @@ const Companies = (props: Props) => {
 
     const [products, setProducts] = useState<productType[]>()
 
+    const deleteProduct = async (id: string) => {
+        let res = await fetch('http://localhost:5000/api/deleteProduct', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        if (res.ok) {
+            alert('Product deleted successfully')
+            window.location.reload()
+        } else {
+            alert('Error while deleting company')
+        }
+    }
     const columns: TableProps<productType>['columns'] = [
+        {
+            title: <DeleteOutlined />,
+            dataIndex: '_id',
+            key: 'delete',
+            render: (_id) => <>{deleteLoading ? <Spin /> : <CloseOutlined style={{ color: 'red', fontSize: '14px', opacity: 0.7 }} onClick={() => {
+                setDeleteLoading(true)
+                deleteProduct(_id);
+            }} />}</>
+
+        },
         {
             title: 'Product Name',
             dataIndex: 'name',
@@ -71,7 +94,7 @@ const Companies = (props: Props) => {
 
             res.json().then(data => {
                 setSelectCompanies(data)
-                
+
             }
             )
         }).catch((err) => { console.log(err); })
@@ -132,12 +155,14 @@ const Companies = (props: Props) => {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{ marginTop: '6em' }}>
 
-                <Button onClick={() => { setOpen(true); getCompanies() }} type="primary" htmlType="submit" style={{ backgroundColor: '#4B49AC', width: 200, height: 50, justifyContent: 'center', alignItems: 'center', display: 'flex', fontSize: '18px' }}>
+                <Button onClick={() => { setOpen(true); getCompanies() }} type="primary" htmlType="submit" style={{ backgroundColor: '#F3797E', width: 200, height: 50, justifyContent: 'center', alignItems: 'center', display: 'flex', fontSize: '18px' }}>
                     <PlusCircleOutlined style={{ fontSize: '18px' }} />ADD PRODUCT
                 </Button>
                 {open ? <Popup closePopup={() => setOpen(false)}>
                     <div style={{ padding: '1em' }}>
-                        <Form
+                        {isLoading ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Spin size='large' />
+                        </div> : <Form
                             name="add-product"
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
@@ -168,7 +193,7 @@ const Companies = (props: Props) => {
                                 </Select>
                             </Form.Item>
 
-                            <Form.Item name="sector" label="Sector" rules={[{ required: true }]}>
+                            <Form.Item name="sector" label="Category" rules={[{ required: true }]}>
                                 <Select
                                     placeholder="Select a sector"
                                     allowClear
@@ -198,7 +223,7 @@ const Companies = (props: Props) => {
                                     ADD PRODUCT
                                 </Button>
                             </Form.Item>
-                        </Form>
+                        </Form>}
                     </div>
                 </Popup> : null}
                 <br />

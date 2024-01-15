@@ -41,3 +41,19 @@ export async function getProducts(req, res) {
     }).catch((err) => { console.log(err); res.status(500).send({ message: 'Internal error' }) })
 
 }
+export async function deleteProduct(req, res) {
+    await mongoose.connect(process.env.MONGODB_URI).then(async () => {
+
+        const { id } = req.body
+
+        await Product.deleteOne({ "_id": id }).then((resp) => {
+            console.log(resp);
+            res.status(200).send({ message: 'Product deleted successfully' })
+        }).catch((err) => { console.log(err); res.status(404).send({ message: err }) })
+
+        mongoose.connection.close();
+
+
+    }).catch((err) => { console.log(err); res.status(500).send({ message: 'Internal error' }) })
+
+}
